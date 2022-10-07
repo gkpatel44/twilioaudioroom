@@ -78,6 +78,7 @@ const Participant = ({ participant, isOwner }) => {
         else {
             participant.audioTracks.forEach(track => {
                 console.log(track);
+                console.log("participant", participant);
                 track.track.disable();
             });
         }
