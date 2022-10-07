@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 const Participant = ({ participant }) => {
     const [videoTracks, setVideoTracks] = useState([]);
     const [audioTracks, setAudioTracks] = useState([]);
+    const [isAudioMute, setIsAudioMute] = useState(false);
 
     const videoRef = useRef();
     const audioRef = useRef();
@@ -62,11 +63,31 @@ const Participant = ({ participant }) => {
         }
     }, [audioTracks]);
 
+    const muteAudio = () => {
+        setIsAudioMute(!isAudioMute)
+        if (isAudioMute) {
+
+            participant.audioTracks.forEach(track => {
+
+                track.track.enable();
+            });
+
+        }
+        else {
+            participant.audioTracks.forEach(track => {
+                track.track.disable();
+            });
+
+        }
+
+    }
+
     return (
-        <div className="participant">
+        <div className="participant" onClick={muteAudio} >
             <h3>{participant.identity}</h3>
             <video ref={videoRef} controls autoPlay={true} />
             <audio ref={audioRef} autoPlay={true} controls muted={false} />
+            <button >{isAudioMute ? "mute" : "unMute"}</button>
         </div>
     );
 };
