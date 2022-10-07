@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 
 const Participant = ({ participant }) => {
-    const [videoTracks, setVideoTracks] = useState([]);
+    // const [videoTracks, setVideoTracks] = useState([]);
     const [audioTracks, setAudioTracks] = useState([]);
+    const [isMute, setIsMute] = useState(false);
 
-    const videoRef = useRef();
+
+    // const videoRef = useRef();
     const audioRef = useRef();
 
     const trackpubsToTracks = (trackMap) =>
@@ -13,21 +15,23 @@ const Participant = ({ participant }) => {
             .filter((track) => track !== null);
 
     useEffect(() => {
-        setVideoTracks(trackpubsToTracks(participant.videoTracks));
+        // setVideoTracks(trackpubsToTracks(participant.videoTracks));
         setAudioTracks(trackpubsToTracks(participant.audioTracks));
 
         const trackSubscribed = (track) => {
-            if (track.kind === "video") {
-                setVideoTracks((videoTracks) => [...videoTracks, track]);
-            } else if (track.kind === "audio") {
+            // if (track.kind === "video") {
+            //     setVideoTracks((videoTracks) => [...videoTracks, track]);
+            // } else
+            if (track.kind === "audio") {
                 setAudioTracks((audioTracks) => [...audioTracks, track]);
             }
         };
 
         const trackUnsubscribed = (track) => {
-            if (track.kind === "video") {
-                setVideoTracks((videoTracks) => videoTracks.filter((v) => v !== track));
-            } else if (track.kind === "audio") {
+            // if (track.kind === "video") {
+            //     setVideoTracks((videoTracks) => videoTracks.filter((v) => v !== track));
+            // } else
+            if (track.kind === "audio") {
                 setAudioTracks((audioTracks) => audioTracks.filter((a) => a !== track));
             }
         };
@@ -36,21 +40,21 @@ const Participant = ({ participant }) => {
         participant.on("trackUnsubscribed", trackUnsubscribed);
 
         return () => {
-            setVideoTracks([]);
+            // setVideoTracks([]);
             setAudioTracks([]);
             participant.removeAllListeners();
         };
     }, [participant]);
 
-    useEffect(() => {
-        const videoTrack = videoTracks[0];
-        if (videoTrack) {
-            videoTrack.attach(videoRef.current);
-            return () => {
-                videoTrack.detach();
-            };
-        }
-    }, [videoTracks]);
+    // useEffect(() => {
+    //     const videoTrack = videoTracks[0];
+    //     if (videoTrack) {
+    //         videoTrack.attach(videoRef.current);
+    //         return () => {
+    //             videoTrack.detach();
+    //         };
+    //     }
+    // }, [videoTracks]);
 
     useEffect(() => {
         const audioTrack = audioTracks[0];
@@ -62,11 +66,18 @@ const Participant = ({ participant }) => {
         }
     }, [audioTracks]);
 
+
+    const handleMute = () => {
+        setIsMute(!isMute)
+        audioRef.current.muted = !isMute
+    }
     return (
         <div className="participant">
             <h3>{participant.identity}</h3>
-            <video ref={videoRef} controls autoPlay={true} />
-            <audio ref={audioRef} autoPlay={true} controls muted={false} />
+            {/* <video ref={videoRef} controls autoPlay={true} /> */}
+            <audio ref={audioRef} autoPlay={true} muted={false} />
+            <button onClick={handleMute}>{isMute ? "unMute" : "Mute"}</button>
+
         </div>
     );
 };

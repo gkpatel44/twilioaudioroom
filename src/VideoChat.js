@@ -54,6 +54,7 @@ const VideoChat = () => {
         [roomName, username]
     );
 
+
     const handleLogout = useCallback(() => {
         setRoom((prevRoom) => {
             if (prevRoom) {
