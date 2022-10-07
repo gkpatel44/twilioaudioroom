@@ -10,7 +10,7 @@ const Room = ({ roomName, room, handleLogout }) => {
 
     useEffect(() => {
         const participantConnected = (participant) => {
-            setParticipants([participant]);
+            setParticipants((prevParticipants) => [...prevParticipants, participant]);
         };
 
         const participantDisconnected = (participant) => {
