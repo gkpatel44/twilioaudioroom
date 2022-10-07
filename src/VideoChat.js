@@ -24,7 +24,7 @@ const VideoChat = () => {
         async (event) => {
             event.preventDefault();
             setConnecting(true);
-            const data = await fetch("http://localhost:3000/join-room", {
+            const data = await fetch("https://twilioaudiobackend.herokuapp.com/join-room", {
                 method: "POST",
                 body: JSON.stringify({
 
