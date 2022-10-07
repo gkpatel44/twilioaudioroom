@@ -10,7 +10,7 @@ const Room = ({ roomName, room, handleLogout }) => {
 
     useEffect(() => {
         const participantConnected = (participant) => {
-            setParticipants((prevParticipants) => [...prevParticipants, participant]);
+            setParticipants([participant]);
         };
 
         const participantDisconnected = (participant) => {
@@ -46,6 +46,7 @@ const Room = ({ roomName, room, handleLogout }) => {
                         <Participant
                             key={room.localParticipant.sid}
                             participant={room.localParticipant}
+                            isOwner={true}
 
 
                         />
@@ -55,8 +56,8 @@ const Room = ({ roomName, room, handleLogout }) => {
                     ""
                 )}
             </div>
-            {/* <h3>Remote Participants</h3>
-            <div className="remote-participants">{remoteParticipants}</div> */}
+            <h3>Remote Participants</h3>
+            <div className="remote-participants">{remoteParticipants}</div>
         </div>
     );
 };
